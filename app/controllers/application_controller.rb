@@ -13,4 +13,26 @@ class ApplicationController < ActionController::Base
       username == ENV["BASIC_AUTH_USER"] && password == ENV["BASIC_AUTH_PASSWORD"]
     end
   end
+
+  def after_sign_up_path_for(resource)
+    if resource.is_a?(User) && resource.valid?
+      # 登録が成功した場合のリダイレクト先
+      root_path
+    else
+      # 登録が失敗した場合のリダイレクト先
+      flash[:alert] = resource.errors.full_messages.join(", ")
+      new_user_registration_path
+    end
+  end
+  
+  def after_sign_in_path_for(resource)
+    if resource.is_a?(User) && resource.valid?
+      # ログインが成功した場合のリダイレクト先
+      root_path
+    else
+      # ログインが失敗した場合のリダイレクト先
+      flash[:alert] = "ログインに失敗しました。"
+      user_session_path
+    end
+  end
 end
