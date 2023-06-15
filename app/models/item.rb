@@ -7,4 +7,12 @@ class Item < ApplicationRecord
   belongs_to :days_to_ship
 
   belongs_to :user
+
+  validates :title, :description, :price, presence: true
+
+  validates :category_id, numericality: { other_than: 1 , message: "can't be blank"}
+  validates :condition_id, numericality: { other_than: 1 , message: "can't be blank"}
+  validates :shipping_fee_id, numericality: { other_than: 1 , message: "can't be blank"}
+  validates :prefecture_id, numericality: { other_than: 1 , message: "can't be blank"}
+  validates :days_to_ship_id, numericality: { other_than: 1 , message: "can't be blank"}
 end
