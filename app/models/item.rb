@@ -9,7 +9,12 @@ class Item < ApplicationRecord
   belongs_to :user
   has_one_attached :image
 
-  validates :title, :description, :price, :image, presence: true
+  validates :title, :description, :image, presence: true
+  validates :price, presence: true,
+                    numericality: { greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999,
+                                    message: "は¥300以上¥9,999,999以下で入力してください" }
+  validates :price, presence: true,
+                    numericality: { only_integer: true, message: "は半角数値で入力してください" }
   validates :category_id, numericality: { other_than: 1 , message: "can't be blank"}
   validates :condition_id, numericality: { other_than: 1 , message: "can't be blank"}
   validates :shipping_fee_id, numericality: { other_than: 1 , message: "can't be blank"}
