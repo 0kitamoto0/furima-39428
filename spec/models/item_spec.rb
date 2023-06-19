@@ -29,27 +29,27 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Description can't be blank")
       end
       it 'カテゴリーが空では投稿できない' do
-        @item.category_id = ''
+        @item.category_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Category can't be blank")
       end
       it '商品の状態が空では投稿できない' do
-        @item.condition_id = ''
+        @item.condition_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Condition can't be blank")
       end
       it '配送料の負担が空では投稿できない' do
-        @item.shipping_fee_id = ''
+        @item.shipping_fee_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Shipping fee can't be blank")
       end
       it '発送元の地域が空では投稿できない' do
-        @item.prefecture_id = ''
+        @item.prefecture_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Prefecture can't be blank")
       end
       it '発送までの日数が空では投稿できない' do
-        @item.days_to_ship_id = ''
+        @item.days_to_ship_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Days to ship can't be blank")
       end
@@ -61,17 +61,17 @@ RSpec.describe Item, type: :model do
       it '価格は¥300~¥9,999,999の間でないと投稿できない' do
         @item.price = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include('Price は¥300以上¥9,999,999以下で入力してください')
+        expect(@item.errors.full_messages).to include("Price は¥300以上¥9,999,999以下で入力してください")
       end
       it '価格は半角数値でないと投稿できない' do
         @item.price = 'あ'
         @item.valid?
-        expect(@item.errors.full_messages).to include('Price は半角数値で入力してください')
+        expect(@item.errors.full_messages).to include("Price は半角数値で入力してください")
       end
       it 'ユーザーが紐付いていなければ投稿できない' do
         @item.user = nil
         @item.valid?
-        expect(@item.errors.full_messages).to include('User must exist')
+        expect(@item.errors.full_messages).to include("User must exist")
       end
     end
   end
