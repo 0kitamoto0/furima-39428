@@ -9,7 +9,8 @@ class Item < ApplicationRecord
   belongs_to :user
   has_one_attached :image
 
-  validates :title, :description, :image, presence: true
+  validates :title, :description, presence: true
+  validates :image, presence: { message: "can't be blank" }
   validates :price, presence: true,
                     numericality: { greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999,
                                     message: "は¥300以上¥9,999,999以下で入力してください" }
