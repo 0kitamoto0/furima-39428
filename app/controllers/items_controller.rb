@@ -1,6 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
-  before_action :require_login, only: [:edit, :update]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
   before_action :set_item, only: [:show, :edit, :update]
 
   def index
@@ -42,12 +41,6 @@ class ItemsController < ApplicationController
   def item_params
     params.require(:item).permit(:title, :description, :price, :category_id, :condition_id, :shipping_fee_id, :prefecture_id,
                                  :days_to_ship_id, :image).merge(user_id: current_user.id)
-  end
-
-  def require_login
-    return if user_signed_in?
-
-    redirect_to user_session_path, alert: 'ログインが必要です'
   end
 
   def set_item
