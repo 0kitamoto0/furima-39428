@@ -25,9 +25,9 @@ class ItemsController < ApplicationController
 
   def edit
     @item = Item.find(params[:id])
-    unless current_user == @item.user
-      redirect_to root_path, alert: '編集権限がありません'
-    end
+    return if current_user == @item.user
+
+    redirect_to root_path, alert: '編集権限がありません'
   end
 
   def update
@@ -38,11 +38,11 @@ class ItemsController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
-  
+
   def require_login
-    unless user_signed_in?
-      redirect_to user_session_path, alert: 'ログインが必要です'
-    end
+    return if user_signed_in?
+
+    redirect_to user_session_path, alert: 'ログインが必要です'
   end
 
   private
