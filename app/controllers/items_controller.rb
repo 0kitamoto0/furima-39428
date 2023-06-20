@@ -40,6 +40,8 @@ class ItemsController < ApplicationController
     if current_user == @item.user
       @item.destroy
       redirect_to root_path, notice: '商品を削除しました'
+    else
+      redirect_to root_path, alert: '削除権限がありません'
     end
   end
 
