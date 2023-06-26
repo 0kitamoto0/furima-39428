@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item, only: [:index, :new, :create]
+  before_action :check_item_ownership, only: [:index, :new]
   
   def index
     gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
@@ -39,5 +40,12 @@ class OrdersController < ApplicationController
       card: params[:order_order_detail][:token],
       currency: 'jpy'
     )
+  end
+
+  def check_item_ownership
+    @item = Item.find(params[:item_id])
+    if current_user == @item.user_id || Order.exists?(item_id: @item.id)
+      redirect_to root_path
+    end
   end
 end
