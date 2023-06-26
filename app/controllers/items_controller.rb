@@ -23,7 +23,7 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    return if current_user == @item.user
+    return if current_user == @item.user && !Order.exists?(item_id: @item.id)
 
     redirect_to root_path, alert: '編集権限がありません'
   end
