@@ -52,22 +52,22 @@ RSpec.describe OrderOrderDetail, type: :model do
       it '郵便番号は、「3桁ハイフン4桁」でないと投稿できない' do
         @order_order_detail.postal_code = '1234567' # 不正な郵便番号を設定
         @order_order_detail.valid?
-        expect(@order_order_detail.errors.full_messages).to include("Postal code は「3桁ハイフン4桁」の形式で入力してください")
+        expect(@order_order_detail.errors.full_messages).to include('Postal code は「3桁ハイフン4桁」の形式で入力してください')
       end
       it '郵便番号は、半角文字列のみでないと投稿できない' do
         @order_order_detail.postal_code = '１２３４５６７' # 不正な郵便番号を設定
         @order_order_detail.valid?
-        expect(@order_order_detail.errors.full_messages).to include("Postal code は「3桁ハイフン4桁」の形式で入力してください")
+        expect(@order_order_detail.errors.full_messages).to include('Postal code は「3桁ハイフン4桁」の形式で入力してください')
       end
       it '電話番号は、10桁以上11桁以内でないと投稿できない' do
         @order_order_detail.phone_number = '123456789' # 不正な電話番号を設定
         @order_order_detail.valid?
-        expect(@order_order_detail.errors.full_messages).to include("Phone number は10桁以上11桁以内の半角数字で入力してください")
+        expect(@order_order_detail.errors.full_messages).to include('Phone number は10桁以上11桁以内の半角数字で入力してください')
       end
       it '電話番号は、半角数値のみでないと投稿できない' do
         @order_order_detail.phone_number = '１２３４５６７８９' # 不正な電話番号を設定
         @order_order_detail.valid?
-        expect(@order_order_detail.errors.full_messages).to include("Phone number は10桁以上11桁以内の半角数字で入力してください")
+        expect(@order_order_detail.errors.full_messages).to include('Phone number は10桁以上11桁以内の半角数字で入力してください')
       end
       it 'ユーザーが紐付いていなければ投稿できない' do
         @order_order_detail.user_id = nil

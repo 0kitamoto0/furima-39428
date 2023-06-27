@@ -2,9 +2,9 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item, only: [:index, :new, :create]
   before_action :check_item_ownership, only: [:index, :new]
-  
+
   def index
-    gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
+    gon.public_key = ENV['PAYJP_PUBLIC_KEY']
     @order_order_detail = OrderOrderDetail.new
   end
 
@@ -26,7 +26,9 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order_order_detail).permit(:postal_code, :prefecture_id, :city, :street_address, :building_name, :phone_number).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:order_order_detail][:token])
+    params.require(:order_order_detail).permit(:postal_code, :prefecture_id, :city, :street_address, :building_name, :phone_number).merge(
+      user_id: current_user.id, item_id: params[:item_id], token: params[:order_order_detail][:token]
+    )
   end
 
   def set_item
@@ -34,7 +36,7 @@ class OrdersController < ApplicationController
   end
 
   def pay_item
-    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
+    Payjp.api_key = ENV['PAYJP_SECRET_KEY']
     Payjp::Charge.create(
       amount: @item.price,
       card: params[:order_order_detail][:token],
@@ -44,8 +46,8 @@ class OrdersController < ApplicationController
 
   def check_item_ownership
     @item = Item.find(params[:item_id])
-    if current_user == @item.user_id || Order.exists?(item_id: @item.id)
-      redirect_to root_path
-    end
+    return unless current_user == @item.user_id || Order.exists?(item_id: @item.id)
+
+    redirect_to root_path
   end
 end
