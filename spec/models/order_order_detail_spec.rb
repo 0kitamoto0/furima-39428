@@ -79,7 +79,7 @@ RSpec.describe OrderOrderDetail, type: :model do
         @order_order_detail.valid?
         expect(@order_order_detail.errors.full_messages).to include("User can't be blank")
       end
-      it 'ユーザーが紐付いていなければ投稿できない' do
+      it '商品が紐付いていなければ投稿できない' do
         @order_order_detail.item_id = nil
         @order_order_detail.valid?
         expect(@order_order_detail.errors.full_messages).to include("Item can't be blank")
