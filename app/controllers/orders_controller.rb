@@ -45,7 +45,6 @@ class OrdersController < ApplicationController
   end
 
   def check_item_ownership
-    @item = Item.find(params[:item_id])
     return unless current_user == @item.user_id || Order.exists?(item_id: @item.id)
 
     redirect_to root_path

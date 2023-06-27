@@ -4,7 +4,7 @@ RSpec.describe OrderOrderDetail, type: :model do
   describe '商品購入情報の保存' do
     before do
       user = FactoryBot.create(:user)
-      item = FactoryBot.build(:item, user_id: user.id)
+      item = FactoryBot.create(:item)
       @order_order_detail = FactoryBot.build(:order_order_detail, user_id: user.id, item_id: item.id)
     end
 
@@ -59,8 +59,13 @@ RSpec.describe OrderOrderDetail, type: :model do
         @order_order_detail.valid?
         expect(@order_order_detail.errors.full_messages).to include('Postal code は「3桁ハイフン4桁」の形式で入力してください')
       end
-      it '電話番号は、10桁以上11桁以内でないと投稿できない' do
+      it '電話番号は、10桁以上でないと投稿できない' do
         @order_order_detail.phone_number = '123456789' # 不正な電話番号を設定
+        @order_order_detail.valid?
+        expect(@order_order_detail.errors.full_messages).to include('Phone number は10桁以上11桁以内の半角数字で入力してください')
+      end
+      it '電話番号は、11桁以内でないと投稿できない' do
+        @order_order_detail.phone_number = '123456789123' # 不正な電話番号を設定
         @order_order_detail.valid?
         expect(@order_order_detail.errors.full_messages).to include('Phone number は10桁以上11桁以内の半角数字で入力してください')
       end
@@ -73,6 +78,11 @@ RSpec.describe OrderOrderDetail, type: :model do
         @order_order_detail.user_id = nil
         @order_order_detail.valid?
         expect(@order_order_detail.errors.full_messages).to include("User can't be blank")
+      end
+      it 'ユーザーが紐付いていなければ投稿できない' do
+        @order_order_detail.item_id = nil
+        @order_order_detail.valid?
+        expect(@order_order_detail.errors.full_messages).to include("Item can't be blank")
       end
     end
   end
